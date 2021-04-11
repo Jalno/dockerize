@@ -1,4 +1,4 @@
-FROM dockerize/np/base:latest
+FROM registry.git.jeyserver.com/yeganemehr/dockerize:nginx-php7.4-alpine
 
 COPY --chown=www-data:www-data . /var/www/html
 RUN rm -fr packages/dockerize && \
