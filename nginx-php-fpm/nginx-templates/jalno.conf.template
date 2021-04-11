@@ -1,0 +1,36 @@
+server {
+	listen 80;
+	server_name ${NGINX_DOMAINS};
+	root /var/www/html;
+	index index.php index.html;
+	autoindex off;
+	location ~ \.php$ {
+		include fastcgi_params;
+		fastcgi_index index.php;
+		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+		fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+	}
+	location / {
+		try_files $uri $uri/ /index.php?$args;
+	}
+	location ~*  \.(jpg|jpeg|png|gif|ico|css|js|woff2?|webm)$ {
+		expires 365d;
+	}
+	location ~* \.git {
+		rewrite .* /index.php?$args;
+	}
+	location /packages/ {
+		location ~ \.php$ {
+			return 403;
+		}
+		location ~ \.json$ {
+			return 403;
+		}
+		location ~ \.sql$ {
+			return 403;
+		}
+		location ~ ^.+/storage/(private|protected)/ {
+			return 403;
+		}
+	}
+}
