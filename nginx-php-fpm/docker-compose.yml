@@ -9,6 +9,7 @@ services:
       - "${HTTPS_PORT}:443"
     environment:
       NGINX_DOMAINS: ${JALNO_DOMAIN}
+      CERTBOT_EMAIL: ${CERTBOT_EMAIL}
       JALNO_DB_HOST: mysql
       JALNO_DB_USER: jalno
       JALNO_DB_PASSWORD: ${MYSQL_PASSWORD}
