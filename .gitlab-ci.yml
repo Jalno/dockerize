@@ -17,7 +17,13 @@ build anp master:
     - docker build --pull -f nginx-php-fpm/base/Dockerfile -t $DOCKER_IMAGE .
     - docker push $DOCKER_IMAGE
   only:
-    - master
+    refs:
+      - master
+    changes:
+      - docker-entrypoint.sh
+      - nginx-php-fpm/base/Dockerfile
+      - nginx-php-fpm/docker-entrypoint.d/**/*
+      - nginx-php-fpm/nginx-templates/**/*
 
 build anp branches:
   image: docker:20.10
@@ -32,6 +38,12 @@ build anp branches:
     - docker build --pull -f nginx-php-fpm/base/Dockerfile -t $DOCKER_IMAGE .
     - docker push $DOCKER_IMAGE
   only:
-    - branches
+    refs:
+      - branches
+    changes:
+      - docker-entrypoint.sh
+      - nginx-php-fpm/base/Dockerfile
+      - nginx-php-fpm/docker-entrypoint.d/**/*
+      - nginx-php-fpm/nginx-templates/**/*
   except:
     - master
