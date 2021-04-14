@@ -17,7 +17,7 @@ services:
 
   mysql:
     image: mariadb:10.5
-    restart: unless-stop
+    restart: unless-stopped
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
       MYSQL_DATABASE: jalno
