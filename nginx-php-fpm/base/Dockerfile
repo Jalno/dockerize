@@ -50,6 +50,8 @@ COPY docker-entrypoint.sh /
 COPY nginx-php-fpm/docker-entrypoint.d/ /docker-entrypoint.d
 COPY nginx-php-fpm/nginx-templates/ /etc/nginx/templates
 
+VOLUME [ "/etc/letsencrypt/" ]
+
 WORKDIR /var/www/html
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
 CMD [ "start" ]
