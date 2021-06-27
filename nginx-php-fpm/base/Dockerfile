@@ -14,7 +14,7 @@ RUN apk --no-cache add nginx certbot certbot-nginx && \
 	apk add --no-cache $runDeps &&\
 	apk del --no-network .gettext &&\
 	mv /tmp/envsubst /usr/local/bin/ &&\
-	mkdir /run/nginx /run/php && \
+	mkdir -p /run/nginx /run/php; \
 	{ \
 		echo "[www]"; \
 		echo "user = www-data"; \
