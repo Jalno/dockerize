@@ -6,7 +6,9 @@ RUN rm -fr packages/dockerize; \
 	if [[ -d /var/www/html/packages/node_webpack ]]; then \
 		apk --no-cache add --virtual .webpack-deps nodejs npm; \
 		cd packages/node_webpack/nodejs; \
-		NODE_ENV=production  npm start -- --production; \
+		npm start -- --skip-webpack; \
+		npm start -- --webpack; \
+		NODE_ENV=production  npm start -- --webpack --production; \
 		find /var/www/html -type d -name "node_modules" -prune -exec rm -fr {} \;; \
 		rm -fr /root/.npm /root/.config; \
 		apk del --no-network .webpack-deps; \
