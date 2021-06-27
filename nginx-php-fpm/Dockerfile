@@ -1,12 +1,20 @@
 FROM registry.git.jeyserver.com/yeganemehr/dockerize:nginx-php7.4-alpine
-
+ARG TSCONFIG_PATH=""
 COPY --chown=www-data:www-data . /var/www/html
 RUN rm -fr packages/dockerize; \
 	find /var/www/html -type d -name ".docker" -prune -exec rm -fr {} \;; \
 	if [[ -d /var/www/html/packages/node_webpack ]]; then \
 		apk --no-cache add --virtual .webpack-deps nodejs npm; \
 		cd packages/node_webpack/nodejs; \
-		NODE_ENV=production  npm start -- --production; \
+		mkdir -p storage/public/frontend/dist; \
+		npm start -- --skip-webpack; \
+		if [[ -n "$TSCONFIG_PATH" ]]; then \
+			npm start -- --webpack --tsconfig=$TSCONFIG_PATH; \
+			NODE_ENV=production  npm start -- -webpack --production --tsconfig=$TSCONFIG_PATH; \
+		else \
+			npm start -- --webpack; \
+			NODE_ENV=production  npm start -- -webpack --production; \
+		fi; \
 		find /var/www/html -type d -name "node_modules" -prune -exec rm -fr {} \;; \
 		rm -fr /root/.npm /root/.config; \
 		apk del --no-network .webpack-deps; \
