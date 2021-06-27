@@ -10,10 +10,10 @@ RUN rm -fr packages/dockerize; \
 		npm start -- --skip-webpack; \
 		if [[ -n "$TSCONFIG_PATH" ]]; then \
 			npm start -- --webpack --tsconfig=$TSCONFIG_PATH; \
-			NODE_ENV=production  npm start -- -webpack --production --tsconfig=$TSCONFIG_PATH; \
+			NODE_ENV=production  npm start -- --webpack --production --tsconfig=$TSCONFIG_PATH; \
 		else \
 			npm start -- --webpack; \
-			NODE_ENV=production  npm start -- -webpack --production; \
+			NODE_ENV=production  npm start -- --webpack --production; \
 		fi; \
 		find /var/www/html -type d -name "node_modules" -prune -exec rm -fr {} \;; \
 		rm -fr /root/.npm /root/.config; \
