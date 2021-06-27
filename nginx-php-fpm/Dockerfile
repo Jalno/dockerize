@@ -4,6 +4,7 @@ COPY --chown=www-data:www-data . /var/www/html
 RUN rm -fr packages/dockerize; \
 	find /var/www/html -type d -name ".docker" -prune -exec rm -fr {} \;; \
 	if [[ -d /var/www/html/packages/node_webpack ]]; then \
+		chown -R root:root /var/www/html; \
 		apk --no-cache add --virtual .webpack-deps nodejs npm; \
 		cd packages/node_webpack/nodejs; \
 		mkdir -p storage/public/frontend/dist; \
@@ -18,6 +19,7 @@ RUN rm -fr packages/dockerize; \
 		find /var/www/html -type d -name "node_modules" -prune -exec rm -fr {} \;; \
 		rm -fr /root/.npm /root/.config; \
 		apk del --no-network .webpack-deps; \
+		chown -R www-data:www-data /var/www/html; \
 	fi; \
 	if [[ -d /var/www/html/packages/cronjob ]]; then \
 		(crontab -u www-data -l 2>/dev/null; echo "* * * * * php /var/www/html/index.php --process=packages/cronjob/processes/cronjob@runTasks") | crontab -u www-data -; \
