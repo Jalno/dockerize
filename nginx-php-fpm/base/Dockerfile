@@ -24,8 +24,8 @@ RUN apk --no-cache add nginx certbot certbot-nginx && \
 		echo "listen.group = nginx"; \
 		echo "listen.mode = 660"; \
 		echo "pm = ondemand"; \
-		echo "pm.max_children = 100"; \
-		echo "pm.process_idle_timeout = 20"; \
+		echo "pm.max_children = 20"; \
+		echo "pm.process_idle_timeout = 20s"; \
 		echo "pm.max_requests = 500"; \
 		echo "php_admin_value[open_basedir] = /var/www/html:/tmp/:/var/tmp/:/dev/urandom"; \
 		echo "php_flag[display_errors] = off"; \
