@@ -4,7 +4,26 @@ variables:
   DOCKER_HOST: tcp://docker:2376
   DOCKER_TLS_CERTDIR: "/certs"
 
-build anp master:
+build php:
+  image: docker:20.10
+  services:
+    - docker:20.10-dind
+  stage: build
+  variables:
+    DOCKER_IMAGE: $CI_REGISTRY_IMAGE:php7.4-alpine
+  before_script:
+    - "[[ \"$CI_COMMIT_REF_SLUG\" != \"master\" ]] && DOCKER_IMAGE=\"$DOCKER_IMAGE-$CI_COMMIT_REF_SLUG\""
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build --pull -f php-cli/base/Dockerfile -t $DOCKER_IMAGE .
+    - docker push $DOCKER_IMAGE
+  only:
+    changes:
+      - docker-entrypoint.sh
+      - php-cli/base/Dockerfile
+      - php-cli/docker-entrypoint.d/**/*
+
+build anp:
   image: docker:20.10
   services:
     - docker:20.10-dind
@@ -12,38 +31,14 @@ build anp master:
   variables:
     DOCKER_IMAGE: $CI_REGISTRY_IMAGE:nginx-php7.4-alpine
   before_script:
+    - "[[ \"$CI_COMMIT_REF_SLUG\" != \"master\" ]] && DOCKER_IMAGE=\"$DOCKER_IMAGE-$CI_COMMIT_REF_SLUG\""
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - docker build --pull -f nginx-php-fpm/base/Dockerfile -t $DOCKER_IMAGE .
     - docker push $DOCKER_IMAGE
   only:
-    refs:
-      - master
     changes:
       - docker-entrypoint.sh
       - nginx-php-fpm/base/Dockerfile
       - nginx-php-fpm/docker-entrypoint.d/**/*
       - nginx-php-fpm/nginx-templates/**/*
-
-build anp branches:
-  image: docker:20.10
-  services:
-    - docker:20.10-dind
-  stage: build
-  variables:
-    DOCKER_IMAGE: $CI_REGISTRY_IMAGE:nginx-php7.4-alpine-$CI_COMMIT_REF_SLUG
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  script:
-    - docker build --pull -f nginx-php-fpm/base/Dockerfile -t $DOCKER_IMAGE .
-    - docker push $DOCKER_IMAGE
-  only:
-    refs:
-      - branches
-    changes:
-      - docker-entrypoint.sh
-      - nginx-php-fpm/base/Dockerfile
-      - nginx-php-fpm/docker-entrypoint.d/**/*
-      - nginx-php-fpm/nginx-templates/**/*
-  except:
-    - master
