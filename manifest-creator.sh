@@ -5,10 +5,10 @@ helpMe()
 {
    echo "";
    echo "Usage: $0 -c path-to-context -f export file";
-   echo "\t-c context to search for git repositories";
-   echo "\t-f export file";
-   echo "\nthe result will save in format this format:\n"
-   echo "{{{\nDIRECTORY_NAME_CONTAINS_GIT_REPO\nREPO_REMOTE_URL\nREPO_BRANCH_NAME\nREPO_HEAD_COMMIT_ID\n}}}\n"
+   echo -e "\t-c context to search for git repositories";
+   echo -e "\t-f export file";
+   echo -e "\nthe result will save in format this format:\n"
+   echo -e "{{{\nDIRECTORY_NAME_CONTAINS_GIT_REPO\nREPO_REMOTE_URL\nREPO_BRANCH_NAME\nREPO_HEAD_COMMIT_ID\n}}}\n"
    exit 1;
 }
 
@@ -39,5 +39,5 @@ basename `dirname {}`;
 git --git-dir={} config --get remote.origin.url;
 git --git-dir={} branch 2> /dev/null | sed -e "/^[^*]/d" -e "s/* \(.*\)/\1/";
 git --git-dir={} rev-parse --verify HEAD;
-echo "}}}\n"' >> $H_EXPORT_FILE
+echo -e "}}}\n"' >> $H_EXPORT_FILE
 
