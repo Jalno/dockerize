@@ -23,7 +23,7 @@ build php:
       - php-cli/base/Dockerfile
       - php-cli/docker-entrypoint.d/**/*
 
-build app:
+build anp:
   image: docker:20.10
   services:
     - docker:20.10-dind
