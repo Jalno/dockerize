@@ -42,7 +42,7 @@ RUN apk --no-cache add nginx certbot certbot-nginx && \
 		--prefix=/usr \
 		--with-jpeg \
 		--with-freetype && \
-	docker-php-ext-install opcache exif soap bz2 gd gmp zip mysqli && \
+	docker-php-ext-install opcache exif soap bz2 gd gmp zip mysqli sockets && \
 	pecl install memcached-3.1.3 && \
 	pecl install -a ssh2-1.2 && \
 	docker-php-ext-enable memcached ssh2 && \
