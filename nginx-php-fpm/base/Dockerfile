@@ -27,7 +27,7 @@ RUN apk --no-cache add nginx certbot certbot-nginx && \
 		echo "pm.max_children = 20"; \
 		echo "pm.process_idle_timeout = 20s"; \
 		echo "pm.max_requests = 500"; \
-		echo "php_admin_value[open_basedir] = /var/www/html:/tmp/:/var/tmp/:/dev/urandom"; \
+		echo "php_admin_value[open_basedir] = /var/www/html:/proc/:/tmp/:/var/tmp/:/dev/urandom"; \
 		echo "php_flag[display_errors] = off"; \
 		echo "php_admin_flag[log_errors] = on"; \
 		echo "security.limit_extensions = .php"; \
@@ -42,7 +42,7 @@ RUN apk --no-cache add nginx certbot certbot-nginx && \
 		--prefix=/usr \
 		--with-jpeg \
 		--with-freetype && \
-	docker-php-ext-install opcache exif soap bz2 gd gmp zip mysqli sockets && \
+	docker-php-ext-install opcache exif soap bcmath bz2 gd gmp zip mysqli sockets && \
 	pecl install memcached-3.1.3 && \
 	pecl install -a ssh2-1.2 && \
 	docker-php-ext-enable memcached ssh2 && \
