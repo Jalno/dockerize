@@ -1,6 +1,7 @@
-FROM registry.git.jeyserver.com/yeganemehr/dockerize:nginx-php7.4-alpine
+FROM ghcr.io/dnj/php-alpine:8.0-mysql-nginx
 ARG TSCONFIG_PATH=""
 COPY --chown=www-data:www-data . /var/www/html
+COPY packages/dockerize/nginx/jalno.conf /etc/nginx/conf.d/default.conf.d/
 RUN rm -fr packages/dockerize; \
 	find /var/www/html -type d -name ".docker" -prune -exec rm -fr {} \;; \
 	if [[ -d /var/www/html/packages/node_webpack ]]; then \

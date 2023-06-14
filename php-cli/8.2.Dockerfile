@@ -1,4 +1,4 @@
-FROM registry.git.jeyserver.com/yeganemehr/dockerize:php7.4-alpine
+FROM ghcr.io/dnj/php-alpine:8.2-mysql
 COPY --chown=www-data:www-data . /var/www/html
 RUN rm -fr packages/dockerize; \
 	find /var/www/html -type d -name ".docker" -prune -exec rm -fr {} \;; \

@@ -1,4 +1,0 @@
-#!/bin/sh
-
-echo "JALNO_IMAGE=${JALNO_IMAGE}" 
-echo "MYSQL_PASSWORD=${MYSQL_PASSWORD}"
